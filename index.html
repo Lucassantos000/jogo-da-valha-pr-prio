@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha</title>
+
+    <style>
+    
+        .fundo{
+            display: flex;
+            background-color: rgba(15, 61, 51, 0.658);
+            min-width: 30px;
+            min-height: 300px;
+
+            align-items: center;
+            justify-content: center;
+        }
+
+        .campos{
+            display:flex;
+            flex-direction: column;
+           
+            min-width: 210px;
+            min-height: 210px;
+
+            box-shadow: 0px 20px 50px 0.5px black;
+
+
+        }
+
+        .linha{
+            justify-content: center;
+            align-items:center;
+            display:flex;
+            flex-direction: row;
+        }
+
+        .campo{
+            display: flex;
+            justify-content: center;
+            align-items:center;
+
+            background-color:rgba(15, 61, 51, 0.658);
+            padding: 0px;
+            margin: 2px;
+            min-width: 70px;
+            min-height:70px;
+            /*
+            width: 33.3%;
+            height: 33.3%;
+            *
+            /*border: 2px solid beige;*/
+
+            object-fit: cover;
+        }
+        
+        .icone{
+            display: flex;
+            width: 50px;
+            height: 50px;
+            background: transparent;
+        }
+
+        .imprime{
+            margin-left: 20px;
+            font-size: 17px;
+            font-family: cursive;
+            background-color: rgba(12, 209, 166, 0.658);
+            border: none;
+            border-radius:5px;
+            width: 70px;
+            height: 30px;
+
+        }
+        .imprime:hover{
+            background-color: rgba(30, 243, 197, 0.76);
+            color: white;
+        }
+
+        .btnborda{
+            border:  1px solid black;
+        }
+        
+
+    </style>
+</head>
+<body>
+    
+
+    <div class="fundo">  <!--fundo do jogo-->
+        <div class="cabacalho"> <!--Cabeçalho-->
+
+        </div>
+
+        <div class="campos"> <!--Div para colocar as linhas--> 
+            <div class="linha"> <!--Div linha1-->
+                
+                <div class="campo "></div>
+                <div class="campo "></div>
+                <div class="campo "></div>
+
+            </div>
+
+            <div class="linha"> <!--Div linha2-->
+                
+                <div class="campo "></div>
+                <div class="campo "></div>
+                
+                <div class="campo "></div>
+                
+            </div>
+
+            <div class="linha"> <!--Div linha3-->
+                
+                <div class="campo "></div>
+                <div class="campo "></div>
+                <div class="campo ">
+                   <!-- <img class="icone" src="./velha.png" alt="velho"> -->
+                </div>
+                
+            </div>
+        </div>
+
+        <button class="imprime">Click</button>
+
+    </div>
+    
+</body>
+
+
+<script>
+    var cedulas = [];
+    var indice = 0;
+    const imgs = ["./velha.png" , "./velho.png"];
+
+
+    var btn = document.getElementsByClassName('imprime')[0];
+    console.log(btn);
+    btn.addEventListener('click', (e)=>{
+        btn.classList.toggle('btnborda');
+        
+        var tabuleiro = document.getElementsByClassName('campos')[0].children
+        var linhas = [];
+            Object.keys(tabuleiro).forEach( (item)=>{
+                console.log(tabuleiro[item]);
+                linhas.push(tabuleiro[item]);
+            })
+
+        
+     
+     
+
+        for(let i = 0; i < linhas.length; i++){
+            for(let y = 0; y < linhas[i].children.length; y++){
+                cedulas.push(linhas[i].children[y]);
+            }   
+        }    
+
+        
+            
+        })
+
+
+
+
+
+    function troca(valor){
+        
+        if(valor ===  1){
+            valor = 0;
+            return valor;
+        }
+        else{
+            valor = 1;
+            return valor;
+        }
+
+        return ;
+    }
+
+    function analisa_ganhador(){
+        tabela = document.getElementsByClassName('campos')[0];
+        console.log(cedulas[0].children);
+        
+
+
+
+    }
+
+    function insere_img(elemento, indice){
+         
+        var img = document.createElement("img");
+        img.src = imgs[indice];
+        img.classList.add('icone');
+        elemento.appendChild(img);
+        
+       
+    }
+
+    function testa_vazio(elemento, indice){
+        /*console.log("Elementos:")
+        console.log('->:' + elemento.children.length);  //número de nós dentro da tag
+        console.log('html:' + elemento.outerHTML.length);
+        console.log('texto:' + elemento.outerText.length);
+        console.log('nodes: ' + elemento.childNodes);
+        console.log('tamanho de nodes: ' + elemento.childNodes.length);*/
+
+        //console.log(elemento.classList);
+
+        if(elemento.children.length === 0 && elemento.classList[0] === 'campo'){  //verifica se o campo é o correto e verfica se nenhum nó foi inserido
+            
+            insere_img(elemento, indice);
+            
+        }
+      
+    }
+
+
+
+
+    /*document.getElementsByClassName("icone").onclick = (e)=>{
+            console.log(e.target.className);
+    };*/
+
+    document.body.onclick = (e)=>{
+        //console.log(e.target.className);
+        //console.log(e.target);
+        
+        
+        //verificar setá vazio
+        
+        if( e.target.classList[0] === 'campo'){
+            testa_vazio(e.target, indice);
+            indice = troca(indice);
+        }
+        analisa_ganhador();
+
+        
+        /*COMANDO PARA INSERIR IMAGEM*/
+       /*
+        var img = document.createElement("img");
+        img.src = 'velho.png';
+        img.classList.add('icone');
+        e.target.appendChild(img);
+        */
+        
+    }
+    
+
+
+
+    
+
+</script>
+
+
+</html>

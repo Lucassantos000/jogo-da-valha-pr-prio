@@ -1,0 +1,1 @@
+// O tipo mais importante em javascript é o objeto

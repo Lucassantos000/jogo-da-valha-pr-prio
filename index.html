@@ -16,6 +16,16 @@
 
             align-items: center;
             justify-content: center;
+
+            flex-direction: column;
+        }
+        
+        #cabecalho{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 200px;
         }
 
         .campos{
@@ -64,7 +74,7 @@
         }
 
         .imprime{
-            margin-left: 20px;
+            margin: 20px 0;
             font-size: 17px;
             font-family: cursive;
             background-color: rgba(12, 209, 166, 0.658);
@@ -82,50 +92,123 @@
         .btnborda{
             border:  1px solid black;
         }
+
+
+        #modal{
+            display: none;
+            background: rgba(0,0,0, .5);
+            width: 100vw;
+            height: 100vh;
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+
+            position: fixed;
+        }
+
+        #caixa_modal{
+            display: flex;
+            flex-direction: column;;
+            justify-content: center;
+            align-items: center;
+            width: 60%;
+            max-width: 800px;
+            min-width: 300px;
+            background-color: rgb(49, 169, 213);
+
+            border-radius: 10px ;
+
+        }
+
+        .trofeu{
+            display: flex;
+            align-items: center;
+            width: auto;
+            font-family: sans-serif;
+            text-align: center;
+            
+        }
+
+        .trofeu img{
+            object-fit: cover;
+            width: 70px;
+            height: 80px;
+        }
         
+        .texto_cabecalho{
+            font-family: sans-serif;
+            font-size: 19px;
+            color: white;
+        }
 
     </style>
 </head>
 <body>
-    
+   
 
-    <div class="fundo">  <!--fundo do jogo-->
-        <div class="cabacalho"> <!--Cabeçalho-->
-
-        </div>
-
-        <div class="campos"> <!--Div para colocar as linhas--> 
-            <div class="linha"> <!--Div linha1-->
-                
-                <div class="campo "></div>
-                <div class="campo "></div>
-                <div class="campo "></div>
-
-            </div>
-
-            <div class="linha"> <!--Div linha2-->
-                
-                <div class="campo "></div>
-                <div class="campo "></div>
-                
-                <div class="campo "></div>
-                
-            </div>
-
-            <div class="linha"> <!--Div linha3-->
-                
-                <div class="campo "></div>
-                <div class="campo "></div>
-                <div class="campo ">
-                   <!-- <img class="icone" src="./velha.png" alt="velho"> -->
+        <div id="modal">
+        
+            <div id="caixa_modal">
+             
+                <div class="trofeu">
+                    <img src="./troféu.png" alt="troféu">
+                    <h1>Parabéns você foi o Ganhador! </h1>
+                    <img src="./troféu.png" alt="troféu">
                 </div>
                 
+                <span style=" display: flex; margin-bottom:20px">
+                    <p style="font-size: 20px; font-family: inherit; font-weight: 600;"> O jogador <a id="jogador" href="#"> </a> foi o campeão</p>
+                    <img style="width: 50px; height: 50px; object-fit: cover;" src="./medalha.png" alt="medalha">
+                </span>
+                
             </div>
+            
+    
         </div>
 
-        <button class="imprime">Click</button>
 
-    </div>
+        <div class="fundo">  <!--fundo do jogo-->
+            <div id="cabecalho"> <!--Cabeçalho-->
+                
+            </div>
+    
+            <div class="campos"> <!--Div para colocar as linhas--> 
+                <div class="linha"> <!--Div linha1-->
+                    
+                    <div class="campo "></div>
+                    <div class="campo "></div>
+                    <div class="campo "></div>
+    
+                </div>
+    
+                <div class="linha"> <!--Div linha2-->
+                    
+                    <div class="campo "></div>
+                    <div class="campo "></div>
+                    
+                    <div class="campo "></div>
+                    
+                </div>
+    
+                <div class="linha"> <!--Div linha3-->
+                    
+                    <div class="campo "></div>
+                    <div class="campo "></div>
+                    <div class="campo ">
+                       <!-- <img class="icone" src="./velha.png" alt="velho"> -->
+                    </div>
+                    
+                </div>
+            </div>
+    
+            <button class="imprime">Click</button>
+    
+        </div>
+
+
+
+
+   
     
 </body>
 
@@ -135,12 +218,40 @@
     var indice = 0;
     const imgs = ["./velha.png" , "./velho.png"];
 
+    
 
-    var btn = document.getElementsByClassName('imprime')[0];
-    console.log(btn);
-    btn.addEventListener('click', (e)=>{
-        btn.classList.toggle('btnborda');
-        
+    function sorteio(){
+        let sorte = Math.round(Math.random());
+        console.log(sorte);
+        let header = document.getElementById('cabecalho');
+        var texto = document.createElement("p");
+        texto.className = "texto_cabecalho";
+        header.appendChild(texto);
+        texto.innerHTML = 'Olá';
+
+        troca(sorte);
+    }
+    
+    sorteio();
+
+
+    
+
+    
+
+
+    function mostra_modal(indice_jogador){
+        document.getElementById('modal').style.display = 'flex';
+        let jogador = document.getElementById('jogador');
+        jogador.innerText = `número ${indice_jogador +1}`;
+        jogador.style.color = 'black';
+
+
+    }
+
+
+    function atualiza_tabuleiro(){
+        console.log('atualizando...');
         var tabuleiro = document.getElementsByClassName('campos')[0].children
         var linhas = [];
             Object.keys(tabuleiro).forEach( (item)=>{
@@ -154,13 +265,22 @@
 
         for(let i = 0; i < linhas.length; i++){
             for(let y = 0; y < linhas[i].children.length; y++){
-                cedulas.push(linhas[i].children[y]);
+                if(cedulas.length<9){
+                    cedulas.push(linhas[i].children[y]);
+                }
             }   
-        }    
-
+        }  
         
-            
-        })
+        
+    }
+
+
+    var btn = document.getElementsByClassName('imprime')[0];
+    console.log(btn);
+    btn.addEventListener('click', (e)=>{
+        btn.classList.toggle('btnborda');
+    })
+     
 
 
 
@@ -170,25 +290,64 @@
         
         if(valor ===  1){
             valor = 0;
+            
             return valor;
         }
         else{
             valor = 1;
+            
             return valor;
         }
 
         return ;
     }
 
-    function analisa_ganhador(){
-        tabela = document.getElementsByClassName('campos')[0];
-        console.log(cedulas[0].children);
+    function analisa_ganhador(indice_jogador){
+
+        if(cedulas[0].children[0] !== undefined){
+          console.log(cedulas[0].children[0]);
+        }
+
         
+        
+        var array_positios = [];
+        for(let i =0; i< cedulas.length; i++){
+            
+            if(cedulas[i].children[0] !== undefined){
+                array_positios[i] = cedulas[i].children[0].src;
+            }else{
+                array_positios[i] = undefined;
+            }
 
+            }
 
+           if(array_positios[0] !== undefined && array_positios[0]===array_positios[1] && array_positios[1] === array_positios[2]  ){
+               mostra_modal(indice_jogador);
+           }
+           if(array_positios[3] !== undefined && array_positios[3]===array_positios[4] && array_positios[5] === array_positios[3]  ){
+               mostra_modal(indice_jogador);
+           }
+           if(array_positios[6] !== undefined && array_positios[6]===array_positios[7] && array_positios[7] === array_positios[8]  ){
+               mostra_modal(indice_jogador);
+           }
+           if(array_positios[0] !== undefined && array_positios[0]===array_positios[3] && array_positios[3] === array_positios[6]  ){
+               mostra_modal(indice_jogador);
+           }
+           if(array_positios[1] !== undefined && array_positios[1]===array_positios[4] && array_positios[4] === array_positios[7]  ){
+               mostra_modal(indice_jogador);
+           }
+           if(array_positios[2] !== undefined && array_positios[2]===array_positios[5] && array_positios[5] === array_positios[8]  ){
+               mostra_modal(indice_jogador);
+           }
+           if(array_positios[0] !== undefined && array_positios[0]===array_positios[4] && array_positios[4] === array_positios[8]  ){
+               mostra_modal(indice_jogador);
+           }
+           if(array_positios[2] !== undefined && array_positios[2]===array_positios[4] && array_positios[4] === array_positios[6]  ){
+               mostra_modal(indice_jogador);
+           }
+        }
 
-    }
-
+      
     function insere_img(elemento, indice){
          
         var img = document.createElement("img");
@@ -235,7 +394,10 @@
             testa_vazio(e.target, indice);
             indice = troca(indice);
         }
-        analisa_ganhador();
+
+          atualiza_tabuleiro();
+
+          analisa_ganhador(troca(indice));
 
         
         /*COMANDO PARA INSERIR IMAGEM*/

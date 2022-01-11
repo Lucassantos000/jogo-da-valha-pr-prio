@@ -113,7 +113,7 @@
             align-items: center;
             width: 60%;
             max-width: 800px;
-            min-width: 300px;
+            min-width: 400px;
             background-color: rgb(49, 169, 213);
 
             border-radius: 10px ;
@@ -126,6 +126,8 @@
             width: auto;
             font-family: sans-serif;
             text-align: center;
+
+            margin-top: 15px;
             
         }
 
@@ -215,24 +217,48 @@
 
 <script>
     var cedulas = [];
-    var indice = 0;
+    var indice = Math.round(Math.random());
     const imgs = ["./velha.png" , "./velho.png"];
 
     
 
-    function sorteio(){
-        let sorte = Math.round(Math.random());
-        console.log(sorte);
-        let header = document.getElementById('cabecalho');
-        var texto = document.createElement("p");
-        texto.className = "texto_cabecalho";
-        header.appendChild(texto);
-        texto.innerHTML = 'Olá';
+    function constroi_cabecalho(indice){
 
-        troca(sorte);
+        console.log(indice);
+        
+        let header = document.getElementById('cabecalho');
+        //remover os nós filhos
+
+        while(header.firstChild){
+            header.removeChild(header.firstChild);
+        }
+
+        var texto = document.createElement("p");
+        var div = document.createElement("div");
+        var img = document.createElement("img");
+
+        img.setAttribute("src",`${imgs[indice]}`);
+        img.style.width = "60px";
+        img.style.height = "60px";
+        img.style.marginBottom = "15px"
+
+        header.appendChild(div);
+        div.style.display = "flex";
+        div.style.justifyContent = "center";
+        div.style.flexDirection = "column";
+        div.style.alignItems = "center";
+        div.style.textAlign = "center";
+        div.appendChild(texto);
+        texto.classList.add("texto_cabecalho");
+        texto.innerHTML = `Olá jogador ${indice+1} é a sua vez.` ;
+        //div.innerHTML =  `Você jogará com <img style = "width: 60px; height:60px;" src="${imgs[indice]}" alt="velh"> `;
+        div.appendChild(img);
+
+        console.log(header.childNodes);
+        
     }
     
-    sorteio();
+    constroi_cabecalho(indice);
 
 
     
@@ -287,6 +313,8 @@
 
 
     function troca(valor){
+
+        
         
         if(valor ===  1){
             valor = 0;
@@ -394,7 +422,7 @@
             testa_vazio(e.target, indice);
             indice = troca(indice);
         }
-
+          constroi_cabecalho(indice);
           atualiza_tabuleiro();
 
           analisa_ganhador(troca(indice));
